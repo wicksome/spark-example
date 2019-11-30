@@ -37,7 +37,7 @@ public class WordCount {
 		return sc.textFile(input);
 	}
 
-	private static JavaPairRDD<String, Integer> process(JavaRDD<String> inputRDD) {
+	static JavaPairRDD<String, Integer> process(JavaRDD<String> inputRDD) {
 		return inputRDD.flatMap(s -> Arrays.asList(s.split(" ")).iterator())
 			.mapToPair(w -> new Tuple2<>(w, 1))
 			.reduceByKey(Integer::sum);
