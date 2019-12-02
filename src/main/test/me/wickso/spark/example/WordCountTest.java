@@ -36,7 +36,7 @@ class WordCountTest {
 		));
 
 		// when
-		JavaPairRDD<String, Integer> resultRDD = WordCount.process(inputRDD);
+		JavaPairRDD<String, Integer> resultRDD = WordCountKotlinKt.process(inputRDD);
 		Map<String, Integer> resultMap = resultRDD.collectAsMap();
 
 		// then
