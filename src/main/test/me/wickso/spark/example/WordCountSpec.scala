@@ -11,7 +11,10 @@ class WordCountSpec {
   @Test
   def test() {
     val conf = new SparkConf()
-    conf.setMaster("local[*]").setAppName("WordCountTest")
+      .setMaster("local[*]")
+      .setAppName("WordCountTest")
+      .set("spark.local.ip", "127.0.0.1")
+      .set("spark.driver.host", "127.0.0.1")
 
     val sc = new SparkContext(conf)
     val input = new ListBuffer[String]

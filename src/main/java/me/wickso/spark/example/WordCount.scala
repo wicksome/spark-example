@@ -3,7 +3,6 @@ package me.wickso.spark.example
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
-// 1.4.1절
 object WordCount {
 
   def main(args: Array[String]): Unit = {
@@ -16,20 +15,19 @@ object WordCount {
     handleResult(resultRDD, args(2))
   }
 
-  def getSparkContext(appName: String, master: String) = {
+  private def getSparkContext(appName: String, master: String) = {
     val conf = new SparkConf().setAppName(appName).setMaster(master)
     new SparkContext(conf)
   }
 
-  def getInputRDD(sc: SparkContext, input: String) = sc.textFile(input)
+  private def getInputRDD(sc: SparkContext, input: String) = sc.textFile(input)
 
-  def process(inputRDD: RDD[String]) = {
-    inputRDD.flatMap(str => str.split(" "))
-      .map((_, 1))
-      .reduceByKey(_ + _)
-  }
+  def process(inputRDD: RDD[String]) = inputRDD
+    .flatMap(str => str.split(" "))
+    .map((_, 1))
+    .reduceByKey(_ + _)
 
-  def handleResult(resultRDD: RDD[(String, Int)], output: String) {
+  private def handleResult(resultRDD: RDD[(String, Int)], output: String) {
     resultRDD.saveAsTextFile(output);
   }
 }
