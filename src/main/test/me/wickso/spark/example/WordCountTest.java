@@ -15,15 +15,21 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class WordCountTest {
-	private static SparkConf conf;
 	private static JavaSparkContext sc;
 
 	@BeforeAll
 	static void setup() {
-		conf = new SparkConf().setAppName("WordCountTest").setMaster("local[*]");
+		final SparkConf conf = new SparkConf().setAppName("WordCountTest").setMaster("local[*]");
 		conf.set("spark.local.ip", "127.0.0.1");
 		conf.set("spark.driver.host", "127.0.0.1");
 		sc = new JavaSparkContext(conf);
+	}
+
+	@AfterAll
+	static void cleanup() {
+		if (sc != null) {
+			sc.stop();
+		}
 	}
 
 	@DisplayName("Spark 예제 테스트")
@@ -46,12 +52,5 @@ class WordCountTest {
 			() -> assertEquals(1, resultMap.get("runs"))
 		);
 		System.out.println(resultMap);
-	}
-
-	@AfterAll
-	static void cleanup() {
-		if (sc != null) {
-			sc.stop();
-		}
 	}
 }
